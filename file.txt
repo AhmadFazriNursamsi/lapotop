@@ -1,0 +1,27 @@
+id 
+nama = varchar
+email = 
+no hp
+active
+flag_delete
+
+
+
+
+
+id_alamat primarykey
+id_user_forenkey
+id_Provinsi
+id_kabupaten
+id_kecamatan
+id_kelurahan
+alamat kedua
+flag_delete
+flag_active
+
+
+
+
+
+
+

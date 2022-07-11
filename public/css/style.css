@@ -1,0 +1,13 @@
+body {
+    color: #34495e;
+}
+body, .form-control {
+    font-size: .8rem;
+}
+
+.hetf2 {
+    border-bottom: 2px solid #bbe2ff;
+    padding: 15px 0;
+    margin-bottom: 20px; 
+}
+    
