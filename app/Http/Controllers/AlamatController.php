@@ -49,6 +49,7 @@ class AlamatController extends Controller
                 if($id_user != 0) {
                    $datas = Product::select('nama')->where('id', $id_user)->first(); 
                    $vp = json_decode($datas);
+                // //    dd($vp);
                    return $vp->nama;
                 }
         
@@ -59,7 +60,7 @@ class AlamatController extends Controller
                 public static function coba2($id){
 
                     $cities  = List_user_gudang::with('users')->first();
-                    dd($cities);
+                    // dd($cities);
                     
                     $output = [];
                     foreach( $cities as $city )

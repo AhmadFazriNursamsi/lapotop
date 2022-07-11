@@ -101,14 +101,17 @@ class PaketProductController extends Controller
       
          $validator = Validator::make($request->all(), [
       
-        'jumlah' => 'required',
-        'search' => 'required',
-        'nama_paket' => 'required',
+             'jumlah.*' => 'required',
+            //  'jumlah[]' => 'required',
+             'search' => 'required',
+             'nama_paket' => 'required',
+             'selectproduct' => 'required',
       
     ],[
      'nama_paket.required' => 'Nama Paket Tidak Boleh Kosong',
      'search.required' => 'Pilih Paket Terlebih Dahulu',
-     'jumlah.required' => 'Jumlah Paket Tidak Boleh Kosong',
+    //  'jumlah.*.required' => 'Jumlah Paket Tidak Boleh Kosong',
+     'selectproduct.required' => 'Pilih Paket Terlebih Dahulu',
      
     ]);
      
@@ -130,7 +133,7 @@ class PaketProductController extends Controller
                     if($explode_id == '') continue;
                     
                     $caripaket = DetailPaket::where('id_list_paket', $datas->id)->where('id_product', $explode_id)->first(); // cek apakah pernah di input
-                    // dd($product->id);
+                    // dd($caripaket);
                     if(isset($caripaket->id)) continue;
                     
                  
@@ -165,16 +168,14 @@ class PaketProductController extends Controller
 
        $tatas  = ListPaket::with('detailPaket')->where('id', $id)->first();
        
+       $datas = [];
        foreach($tatas->detailPaket as $key  => $data){
-        //    dd($data);
          $tatas->detailPaket[$key]->nama = Calamat::detail_paket_id($data->id_product);
-        //  dd($dd);
-
+         $datas[$key]= [
+            $data->nama,$data->jumlah
+         ];
        }
-       
-        // dd($tatas);
-
-        return response()->json(['data' => $tatas, 'status' => '200'], 200);
+        return response()->json(['data' => $datas,$tatas, 'status' => '200'], 200);
     }
 
     /**
@@ -183,12 +184,22 @@ class PaketProductController extends Controller
      * @param  \App\Models\ListPaket  $listPaket
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, ListPaket $listPaket)
+    public function edit($id)
     {
-        $datas =  DetailPaket::with('products', 'list_paket')->where('id', $id)->first();
-        // dd($datas);
+        $tatas  = ListPaket::with('detailPaket')->where('id', $id)->first();
+       
+        $datas = [];
+        $i= 1;
+        foreach($tatas->detailPaket as $key  => $data){
+          $tatas->detailPaket[$key]->nama = Calamat::detail_paket_id($data->id_product);
+          $datas[$key]= [
+             $i++,$data->nama,$data->satuan,$data->products[0]->kode_products,$data->jumlah,$data->id
+          ];
+        }
+        // $dd = $datas->toArray();
+        // return $datas->toArray();   // dd($datas);
 
-        return response()->json(['data' => $datas, 'status' => '200'], 200);
+        return response()->json(['data' => $datas,$tatas, 'status' => '200'], 200);
     }
     public function dd($id){
         $paket =  DetailPaket::with('products')->where('id', $id)->get();
