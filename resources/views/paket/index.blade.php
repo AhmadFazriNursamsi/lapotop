@@ -41,8 +41,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
 </style>
 @endsection
-{{-- <title>{{ $datas['title'] }}</title> --}}
-{{-- {{ dd($datas) }} --}}
+
 
 <x-app-layout>
     <x-slot name="header">
@@ -56,7 +55,6 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="table-responsive">
-                        <button type="button" class="btn btn-danger del">Hapus</button>
                         <table id="PaketTable"
                             class="table text-start table-striped align-middle table-bordered table-hover mb-0">
                             <thead>
@@ -109,13 +107,14 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                 </div></dd>
                                 <input type="hidden" name="id" class="editt" data-id="" id="id_name">
                                 </dl>
-                            
-                                <table class="table table-striped" id="table_edit">
-                                         <thead>
+
+                                <div class="table-option">
+
+                                    <table class="table table-striped" id="table_edit">
+                                        <thead>
                                           <tr>
-                                              <th class="nooo">No</th>
-                                              {{-- <th class="align-center">Gambar</th> --}}
-                                              <th class="align-center">Nama Product</th>
+                                            <th class="nooo">No</th>
+                                            <th class="align-center">Nama Product</th>
                                             <th class="align-center">Satuan</th>
                                             <th class="align-center">Alias</th>
                                             <th class="align-center">Jumlah</th>
@@ -124,8 +123,8 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                         </tr>
                                     </thead>
                                   <tbody>
-                                  </tbody>
-                                  <tfoot>
+                                </tbody>
+                                <tfoot>
                                     <tfoot>
                                         <tr>
                                             <th class="nooo">No</th>
@@ -134,12 +133,13 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                               {{-- <th class="align-center">Gambar</th> --}}
                                               <th class="align-center">Alias</th>
                                               <th class="align-center">Jumlah</th>
-                                            <th>Delete</th>
-                                        
-                                        </tr>
+                                              <th>Delete</th>
+                                              
+                                            </tr>
                                     </tfoot>
                                   </tfoot>
                                 </table>
+                            </div>
                                 
                                 
                                 <div class="modal-footer">
@@ -207,29 +207,26 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                     $('#PaketTable').DataTable().ajax.url(url).load();
                 }
             }
-            $(document).ready(function() {
-                var getndate = getNowdate(); // helpers
-                var table = $('#PaketTable').DataTable({
-                    ajax: url,
-                    columnDefs: [{
-                            'targets': 2,
-                            'searchable': false,
-                            'orderable': false,
-                            'className': 'dt-body-center',
-                            'render': function(data, type, full, meta) {
-                                return '<span class="btn btn-info btn-sm" onclick="showdetail(' + full[2] + ')">details</span>';
-                            }
-                        },
+        $(document).ready(function() {
+            var getndate = getNowdate(); // helpers
+            var table = $('#PaketTable').DataTable({
+                ajax: url,
+                columnDefs: [{
+                        'targets': 2,
+                        'searchable': false,
+                        'orderable': false,
+                        'className': 'dt-body-center',
+                        'render': function(data, type, full, meta) {
+                            return '<span class="btn btn-info btn-sm" onclick="showdetail(' + full[2] + ')">details</span>';
+                        }
+                    },
 
-                        
-                    ],
+                    
+                ],
 
-                });
-
-                var getndate = getNowdate(); // helpers
-                var tabl2 = $('#listgudangtable').DataTable({
-
-                    // ajax:url,
+            });
+            var getndate = getNowdate(); // helpers
+            var tabl2 = $('#listgudangtable').DataTable({
                     columnDefs: [
                         {
                             'targets': 4,
@@ -256,17 +253,30 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
                 });
 
-                $( "#paketform" ).submit(function(e) {
-            // var id = ("#id_name").val();
-           var id = $('.editt').attr('data-id');
+                $("#buttonaddPaket").on('click', function () { 
+                    $('#modaladd').modal('show');
+                    $(".titlemodal").html(' Add Paket')
+                    $('.icoon').html('<i class="bi bi-plus-circle-fill"></i>');
+                    $("#paketid").val("");
+                    $('.paket_lisy').html("");
+                    $('#user_group').hide();
+                    $('.copy').html("");
+                    $(".table-option").hide();
+                    $("#nama_paket").val("");
+                    $("#user_group").val("");
+                    $("#id_name").val("");
+                    $(".control-group after-add-more").html("");
+                    var table3 = document.querySelector("#table_edit tbody");
+                        table3.innerHTML= "";
 
-            var url= "{{ asset('/paket/store') }}" ;
-            if(id != '')
-            var url= "{{ asset('/paket/update') }}/" + id ;
-
-
-            e.preventDefault();
-            var form = $('#paketform');
+             })
+            $( "#paketform" ).submit(function(e) {
+                var id = $('.editt').val();
+                var url= "{{ asset('/paket/store') }}" ;
+                if(id != '')
+                var url= "{{ asset('/paket/update') }}/" + id ;
+                var form = $('#paketform');
+                e.preventDefault();
                     $.ajax({
                         type: "POST",
                         url: url,
@@ -286,74 +296,53 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                             }
                             else {
                                 $.each(response.errors, function(key, value){
-                                Swal.fire({
-                                    title: 'Gagal!',
-                                    text: value,
-                                    icon: 'error'
+                                    Swal.fire({
+                                        title: 'Gagal!',
+                                        text: value,
+                                        icon: 'error'
+                                    });
                                 });
-                            });
-                                
                             }
-
                             $('#user_group').hide();
                             $('.copy').html("");
                             $(".after-add-more").html("");
-                            $(".option-table").val("");
-                    
-                            
                         },
-
                         error: function(jqXHR, textStatus, errorThrown) {
                             console.log(textStatus, errorThrown);
                         }
                     });
-                });  
+            });  
+        });
 
-            });
-
-            $("#buttonaddPaket").on('click', function () { 
-                $('#modaladd').modal('show');
-                $(".titlemodal").html(' Add Paket')
-                $('.icoon').html('<i class="bi bi-plus-circle-fill"></i>');
-                $("#paketid").val("");
-                $('.paket_lisy').html("");
-                $('#user_group').hide();
-                $('.copy').html("");
-                // $(".odd").html("");
-               $("#nama_paket").val("");
-               $(".option-table").hide("");
-           
-                $(".control-group after-add-more").html("");
-
-             })
-
-            //  function search() { 
-
+   
     $('#paketid').keyup(function(){  
+
+        $(".table-option").show();
+        // $("#user_group").hide();
+        // $("#id_name").hide();
+        var id = $('.editt').val();
+        var table3 = document.querySelector("#table_edit tbody");
+        
+        // $("#table_edit").hide();
         var path = "{{ route('autocomplete') }}";
         var query = $(this).val();  
-       
-        if(query != '')  
-        {  
+        if(query != '')  {  
             $.ajax({  
                 url: path,  
                 method:"GET",  
                 data:{query:query},  
                 success:function(data) {  
                     htmls1 = '<select class="list-unstyled form-control form-group col-sm-8" id="id_user" name="selectproduct" onchange="table(this)">';
-                        // console.log(htmls1);
+                        htmls1 += '<option value="" selected disabled hidden><b>Pilih Paket</b></option>'
                         $.each(data, function (k, i) { 
                             htmls1 += "<option value=\""+i.id+"\">"+i.nama+"</option>";  
-                            // console.log(k,i);
                         });
                     htmls1 += '</select>'
                     $('.paket_lisy').html(htmls1);  
                 }  
             });  
-            }
-            
-    }
-    );  
+        }    
+    });  
             
                     /////////////////////////////////      Modal SHOW DETAIL       //////////////////////////////////////
     function showdetail(id) {
@@ -361,6 +350,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
         $("#modaladd").modal('hide');
         $(".titlemodal").html(" View Paket");
         $(".icoon").html('<i class="bi bi-card-list"></i>');
+        $(".table-option").show();
         var table3 = document.querySelector("#table_show tbody");
         table3.innerHTML= "";
 
@@ -369,20 +359,14 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                     url: url,
                     type: "get",
                     success: function(response) {
-                        var tampung= "";
-                        var tampung2= "";
-                        console.log(response[0].nama_paket);
                         $("#paket_id").html(response[0].nama_paket)
                         data = response.data;
                         $.each(data, function (i, k) { 
-                            // console.log(i,k[1]);
                     var htmlinputtable = '<tr class="" id="row-'+k.id+'">\
                     <td class="sorting_1">'+k[0]+'</td>\
                     <td>'+k[1]+'</td>\
                     </tr>';
-                    
-                    // table3.innerHTML = table3.innerHTML + htmlinputtable;
-
+                    console.log(htmlinputtable);
                     const regex = new RegExp('(row-' + id + ')', 'gm');
                     let m;
                     if(regex.exec(table3.innerHTML) == null)
@@ -394,7 +378,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                     }
                 }); 
                 $("#id_name").val(id);
-                  $('.editt').attr('data-id', id);
+                  $('.editt').val(id);
               
                 
             }
@@ -408,48 +392,47 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
     function table(a) { 
         id = $(a).val();
 
-        // $(".nooo").hide();
         var hidden = $("#user_group").val();
         var tampung = hidden + ', ' + id;
         nama = $( "#id_user option:selected" ).text();
         const pattern = new RegExp('(' + id + ')', 'gm');
         let m;
+        var table3 = document.querySelector("#table_edit tbody");
 
-        if(m = pattern.exec(hidden) == null) {
-            $("#user_group").val(tampung);}
+if(m = pattern.exec(hidden) == null) {
+    $("#user_group").val(tampung);}
+    
+    var url = "{{ asset('/api/tableproduct/getdata') }}/" + id;
+    $.ajax({
+        url: url,
+        type: "GET",
+        success: function(response) {
 
-        var url = "{{ asset('/api/tableproduct/getdata') }}/" + id;
-        $.ajax({
-            url: url,
-            type: "GET",
-            success: function(response) {
-                // console.log(response.data[0][5]);
-
-                    var htmlinput = '<tr class="" id="row-'+response.data[0][5]+'">\
-                    <td class="sorting_1">'+response.data[0][0]+'</td>\
-                    <td>'+response.data[0][1]+'</td>\
-                    <td>'+response.data[0][2]+'</td>\
-                    <td>'+response.data[0][3]+'</td>\
-                    <td class="  dt-body-center">\
-                        <div class="form-group row">\
-                            <div class="col-xs-2"><input type="number" name="jumlah[\'id\']['+response.data[0][5]+']" id="jumlah-'+response.data[0][5]+'" value="1" step="0.05" class="form-group form-control jumlah"></div>\
+            var htmlinput = '<tr class="" id="row-'+response.data[0][5]+'">\
+                <td class="sorting_1"></td>\
+                <td>'+response.data[0][1]+'</td>\
+                <td>'+response.data[0][2]+'</td>\
+                <td>'+response.data[0][3]+'</td>\
+                <td class="  dt-body-center">\
+                    <div class="form-group row">\
+                        <div class="col-xs-2"><input type="number" name="jumlah[\'id\']['+response.data[0][5]+']" id="jumlah-'+response.data[0][5]+'" value="1" step="0.05" class="form-group form-control jumlah"></div>\
                         </div>\
-                    </td>\
-                    <td class="  dt-body-center"><span class="btn btn-danger deletee btn-sm" onclick="kurangininput('+response.data[0][5]+')"><i class="bi bi-trash-fill"></i></span></td>\
-                     </tr>';
-                    var table3 = document.querySelector("#table_edit tbody");
-                    
-                    const regex = new RegExp('(row-' + id + ')', 'gm');
-                    let m;
-                    
-
-                    if(regex.exec(table3.innerHTML) == null)
+                        </td>\
+                        <td class="  dt-body-center"><span class="btn btn-danger deletee btn-sm" onclick="kurangininput('+response.data[0][5]+')"><i class="bi bi-trash-fill"></i></span></td>\
+                        </tr>';
+                        
+                        
+                        const regex = new RegExp('(row-' + id + ')', 'gm');
+                        let m;
+                        
+                        
+                        if(regex.exec(table3.innerHTML) == null)
                         table3.innerHTML = table3.innerHTML + htmlinput;
                     else {
                         Swal.fire({
-                            icon: 'danger',
+                            icon: 'error',
                             title: 'Warning',
-                            html:'Data <b>Sudah ada</b>'
+                            html:'<b>Produk Sudah Ada</b>'
                         });
                     }
             }
@@ -464,47 +447,18 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
         $("#user_group").val(tampung);
         var rowid = '#row-'+a;
         var table = $('#listgudangtable').DataTable();
-        // console.log(a);
-        // $('.deletee').on( 'click', 'tbody tr', function () {
-        //     table.row( a ).remove();
-        // } );\ 
         $("#row-"+a).remove();
-    //    $('#listgudangtable tbody').on( 'click', 'tr', function () {
-    //         table
-    //             .row('#'+a+'')
-    //             .remove()
-    //             .draw(false);
-    //     } );
-
         Swal.fire({
                 icon: 'success',
                 title: 'Berhasil',
                 html:'Data Berhasil <b>Dihapus</b>'
             });
 }
-    $(document).ready(function () {
-        var ttt = $('#PaketTable').DataTable();
-    
-        $('#PaketTable tbody').on('click', 'tr', function () {
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-            } else {
-                ttt.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
-        });
-    
-        $('.del').click(function () {
-            ttt.row('.selected').remove().draw(false);
-        });
-    });
-     
-      
     function editshow(id) {
         id = $(id).val();
-        idx = $('.editt').attr('data-id');
-        $(".option-table").hide();
+        idx = $('.editt').val();
         $('#modaladd').modal('show');
+        $(".table-option").show();
         $("#modal_view").modal('hide');
         $(".tutuptable").hide();
         $(".titlemodal").html(' Edit Paket')
@@ -516,6 +470,8 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
         $('.copy').html("");
         $(".control-group after-add-more").html("");
         var id = $("#id_name").val();
+        var table3 = document.querySelector("#table_edit tbody");
+        table3.innerHTML= "";
 
         var url = "{{ asset('/paket/edit') }}/" + idx;
                 $.ajax({
@@ -541,7 +497,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                         </td>\
                                         <td class="  dt-body-center"><span class="btn btn-danger deletee btn-sm" onclick="kurangininput('+item[5]+')"><i class="bi bi-trash-fill"></i></span></td>\
                                         </tr>';
-                                        var table3 = document.querySelector("#table_edit tbody");
+                                 
                                         table3.innerHTML = table3.innerHTML + htmlinput;
                                         const regex = new RegExp('(row-' + id + ')', 'gm');
                                         let m;

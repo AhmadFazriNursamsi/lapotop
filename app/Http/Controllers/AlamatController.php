@@ -49,8 +49,7 @@ class AlamatController extends Controller
                 if($id_user != 0) {
                    $datas = Product::select('nama')->where('id', $id_user)->first(); 
                    $vp = json_decode($datas);
-                // //    dd($vp);
-                   return $vp->nama;
+                    return $vp->nama;
                 }
         
                 return $datas;

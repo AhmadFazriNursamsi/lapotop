@@ -106,8 +106,6 @@ Route::post('/paket/store', [PaketProductController::class, 'store']);
 Route::get('/paket/detail/{id}', [PaketProductController::class, 'show']);
 Route::get('/paket/edit/{id}', [PaketProductController::class, 'edit']);
 Route::post('/paket/update/{id}', [PaketProductController::class, 'update']);
-// Route::get('/paket/delete/{id}', [PaketProductController::class, 'destroy']);
-// Route::get('search', [PaketProductController::class, 'index'])->name('search');
 Route::get('autocomplete', [PaketProductController::class, 'autocomplete'])->name('autocomplete');
 
 

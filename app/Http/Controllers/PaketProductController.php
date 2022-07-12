@@ -62,7 +62,7 @@ class PaketProductController extends Controller
             $i = 1;
             foreach($paket as $key => $product){
                 $datas[$key] = [
-                   $i++, $product->nama,$product->satuan,$product->kode_products,'',$product->id
+                   $i++,$product->nama,$product->satuan,$product->kode_products,'',$product->id
                 ];
             }
     
@@ -99,31 +99,25 @@ class PaketProductController extends Controller
      */
     public function store(Request $request){
       
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
       
              'jumlah.*' => 'required',
-            //  'jumlah[]' => 'required',
              'search' => 'required',
-             'nama_paket' => 'required',
              'selectproduct' => 'required',
-      
-    ],[
-     'nama_paket.required' => 'Nama Paket Tidak Boleh Kosong',
-     'search.required' => 'Pilih Paket Terlebih Dahulu',
-    //  'jumlah.*.required' => 'Jumlah Paket Tidak Boleh Kosong',
-     'selectproduct.required' => 'Pilih Paket Terlebih Dahulu',
-     
-    ]);
+             'nama_paket' => 'required|unique:list_paket_produk',
+        ],[
+            'nama_paket.required' => 'Nama Paket Tidak Boleh Kosong',
+            'search.required' => 'Pilih Paket Terlebih Dahulu',
+            'nama_paket.unique' => 'Nama Paket Sudah Terdaftar',
+            'selectproduct.required' => 'Pilih Paket Terlebih Dahulu',
+        ]);
      
     if ($validator->fails()) {
      return response()->json(['errors'=>$validator->errors()->all()]);
- }
-
+    }
         $datas = new ListPaket();
         $datas->nama_paket = $request->nama_paket;
-        // $datas->nama = $request->search;
         $datas->created_at = date('Y-m-d H:i:s');
-
         if($datas->save()){
         $products = Product::get();
         foreach($products as $product){
@@ -133,10 +127,7 @@ class PaketProductController extends Controller
                     if($explode_id == '') continue;
                     
                     $caripaket = DetailPaket::where('id_list_paket', $datas->id)->where('id_product', $explode_id)->first(); // cek apakah pernah di input
-                    // dd($caripaket);
                     if(isset($caripaket->id)) continue;
-                    
-                 
                     $listProduct = new DetailPaket;
                     $listProduct->id_list_paket =$datas->id;
                     $listProduct->id_product =$explode_id;
@@ -144,11 +135,8 @@ class PaketProductController extends Controller
                     $listProduct->satuan = $product->satuan;
                     $listProduct->created_at = date('Y-m-d H:i:s');
                     $listProduct->save();// tambah kan user baru berdasarkan id gudang
-                }
-    
-                
+                }   
             }
-            // dd($listProduct->save());
         }
 
     }
@@ -163,11 +151,8 @@ class PaketProductController extends Controller
      */
     public function show($id)
     {
-        // dd($id);
-    //    $datas =  DetailPaket::with('products', 'list_paket')->where('id', $id)->first();
 
        $tatas  = ListPaket::with('detailPaket')->where('id', $id)->first();
-       
        $datas = [];
        foreach($tatas->detailPaket as $key  => $data){
          $tatas->detailPaket[$key]->nama = Calamat::detail_paket_id($data->id_product);
@@ -193,17 +178,13 @@ class PaketProductController extends Controller
         foreach($tatas->detailPaket as $key  => $data){
           $tatas->detailPaket[$key]->nama = Calamat::detail_paket_id($data->id_product);
           $datas[$key]= [
-             $i++,$data->nama,$data->satuan,$data->products[0]->kode_products,$data->jumlah,$data->id
+             $i++,$data->nama,$data->satuan,$data->products[0]->kode_products,$data->jumlah,$data->products[0]->id
           ];
         }
-        // $dd = $datas->toArray();
-        // return $datas->toArray();   // dd($datas);
-
         return response()->json(['data' => $datas,$tatas, 'status' => '200'], 200);
     }
     public function dd($id){
         $paket =  DetailPaket::with('products')->where('id', $id)->get();
-        // dd($paket[0]->products[0]->nama);
             $datas = [];
             $i = 1;
             foreach($paket as $key => $product){
@@ -224,73 +205,54 @@ class PaketProductController extends Controller
      */
     public function update($id, Request $request, ListPaket $listPaket)
     {
-
-        // $datas = new ListPaket();
-        // $datas->nama_paket = $request->nama_paket;
-        // // $datas->nama = $request->search;
-        // $datas->created_at = date('Y-m-d H:i:s');
-
-        // if($datas->save()){
-        // $products = Product::get();
-        // // dd($products);
-        // foreach($products as $product){
-        //     if($request->user_group != ''){
-        //         $explode = explode(', ', $request->user_group);
-        //         foreach($explode as $explode_id){
-        //             if($explode_id == '') continue;
+        // dd($id);
+        $validator = Validator::make($request->all(), [
+            'jumlah.*' => 'required',
+            // 'search' => 'required',
+            // 'selectproduct' => 'required',
+            'nama_paket' => 'required',
+       ],[
+           'nama_paket.required' => 'Nama Paket Tidak Boleh Kosong',
+        //    'search.required' => 'Pilih Paket Terlebih Dahulu',
+        //    'nama_paket.unique' => 'Nama Paket Sudah Terdaftar',
+        //    'selectproduct.required' => 'Pilih Paket Terlebih Dahulu',
+       ]);
     
-        //             $caripaket = DetailPaket::where('id_list_paket', $datas->id)->where('id_product', $explode_id)->first(); // cek apakah pernah di input
-        //             if(isset($caripaket->id)) continue;
-    
-        //             $listProduct = new DetailPaket;
-        //             $listProduct->id_list_paket =$datas->id;
-        //             $listProduct->id_product =$explode_id;
-        //             $listProduct->jumlah =$request->jumlah;
-        //             $listProduct->satuan = $product->satuan;
-        //             $listProduct->created_at = date('Y-m-d H:i:s');
-        //             $listProduct->save();// tambah kan user baru
+   if ($validator->fails()) {
+    return response()->json(['errors'=>$validator->errors()->all()]);
+   }
+
 
         $datas = ListPaket::where('id', $id)->first();
         $datas->nama_paket = $request->nama_paket;
         $datas->updated_at = date('Y-m-d H:i:s');
         
         if($datas->update()){
-            // Save id user di list user gudang
             if($request->user_group != ''){
                 $explode = explode(', ', $request->user_group);
-                // delete list gudang
-                DetailPaket::where('id_product', $id)->delete(); // cek 
-    
+                $products = Product::get();
+                 DetailPaket::where('id_product', $id)->delete(); // cek
                 foreach($explode as $explode_id){
-    
+                    // dd($explode_id);
                     if($explode_id == '') continue;
-                    $cariuser = DetailPaket::where('id_product', $explode_id)->where('id_list_paket', $datas->id)->first(); // cek apakah pernah di input
-                    if(isset($cariuser->id)) continue;
-    
-                    $user = DetailPaket::where('id', $id)->first();
-    
-                    if(!isset($user->id)) {
-                        $user = new DetailPaket;
-                        $user->id_product = $explode_id;
-                        $user->id_list_paket = $id;
-                        // $user->id_list_paket = $id;
-                        $user->jumlah = $request->jumlah;
-                        $user->updated_at = date('Y-m-d H:i:s');
-                        $user->save(); // tambah kan user baru berdasarkan id gudang
-                    } else {
-                        $user->id_product = $explode_id;
-                        $user->id_list_paket = $datas->id;
-                        // $user->satuan = $products->satuan;
-                        $user->jumlah = $request->jumlah;
-                        $user->updated_at = date('Y-m-d H:i:s');
-                        $user->save(); // tambah kan user baru berdasarkan id gudang
+                    $caripaket = DetailPaket::where('id_list_paket', $datas->id)->where('id_product', $explode_id)->first(); // cek apakah pernah di input
+                    // dd($caripaket);
+                    if(isset($caripaket->id)) continue;
+                    // dd($explode_id);
+
+                    $tatas = DetailPaket::where('id', $id)->first();
+                    if(!isset($caripaket->id)){
+                        $tatas = new DetailPaket;
+                        $tatas->id_list_paket =$datas->id;
+                        $tatas->id_product =$explode_id;
+                        $tatas->jumlah =$request->jumlah["'id'"][$explode_id];
+                        $tatas->satuan = $products[0]->satuan;
+                        $tatas->updated_at = date('Y-m-d H:i:s');
+                        $tatas->save();// tambah kan user baru berdasarkan id gudang
                     }
-                    
-                }
+                    }   
             }
-         }
-         
-                        
+        }             
          return response()->json(['data' => ['success'], 'status' => '200'], 200);
     }
 
