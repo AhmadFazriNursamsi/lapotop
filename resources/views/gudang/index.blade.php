@@ -3,7 +3,10 @@
 $haveaccessadd = Helpers::checkaccess('users', 'add');
 $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
-?><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+?>
+@section('title')
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 
 
 <style>
@@ -14,16 +17,17 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
         border-radius: 32em;
     }
     .is-invalid {
-    display: block;
-}   
-.alert-danger{
-    line-height:0;
-}
-.modal-footer{
-    justify-content: flex-start;
-}
-</style>
+        display: block;
+    }   
+    .alert-danger{
+        line-height:0;
+    }
+    .modal-footer{
+        justify-content: flex-start;
+    }
+    </style>
 <title>{{ $datas['title'] }}</title>
+@endsection
 <x-app-layout>
     {{-- <title>{{ $datas['title'] }}</title> --}}
     <x-slot name="header">
@@ -127,8 +131,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                     <div class="col">
                         <label for="alias_gudang" class="form-label alias_gudang">alias_gudang</label>
                         <input type="alias_gudang" class="form-control alias_gudang" placeholder="alias_gudang" name="alias_gudang" id="alias_gudang" aria-describedby="validationServer03Feedback" >
-
-                  
+                        <input type="hidden" id="idAdd">
                     </div> 
                 </div>
 
@@ -415,13 +418,14 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
         $("#user_group").val("");
         $(".copy").hide();
         $(".copy").hide();
-        // $(".copy2").hide();
+        $("#idAdd").val("");
         $("#undeletevbtn").hide();
         $(".nama").val("");
         $(".alias_gudang").val("");
         $(".alamat").val("");
         $(".icoon").html("Add Gudang");
         $("#addmodall").modal('show');
+        $(".after-add-more").hide();
         
      })
 
@@ -430,11 +434,11 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
     $(document).ready(function(){
         
         $( "#formm" ).submit(function(e) {
-            // idx = $('#btn_addcustomer').attr('data-attid');
+            var id = $("#idAdd").val();
             idx = $('#editbtn').attr('data-attid');
-            var url = "{{ asset('/gudang/update') }}/" + idx ;
-            if(idx == "")
             var url= "{{ asset('/gudang/store') }}" ;
+            if(id != "")
+            var url = "{{ asset('/gudang/update') }}/" + id ;
 
 
         e.preventDefault();
@@ -504,6 +508,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
 function Userchange(a){
         id = $(a).val();
+        $('.after-add-more').show();
         var hidden = $("#user_group").val();
         var tampung = hidden + ', ' + id;
         nama = $( "#id_user option:selected" ).text();
@@ -586,7 +591,8 @@ function kurangininput(a) {
                     
                 }); 
                 
-            $('#deletevbtn').attr('data-attid', id);
+                $('#deletevbtn').attr('data-attid', id);
+                $("#idAdd").val(id);
             $('#btnlistProduct').attr('data-attid', id);
             $('#editbtn').attr('data-attid', id);
             $('#undeletevbtn').attr('data-attid', id);
@@ -610,8 +616,9 @@ function kurangininput(a) {
    
 
     function editshow(){
-        idx = $('#editbtn').attr('data-attid',);
-        // <i class="bi bi-person-workspace"> </i>
+        idx = $('#editbtn').attr('data-attid');
+        id = $("#idAdd").val();
+        $('.after-add-more').show();
         $("#iconn").html("<i class='bi bi-person-workspace'> </i>");
         $(".icoon").html("Edit Gudang");
         

@@ -3,7 +3,9 @@
 $haveaccessadd = Helpers::checkaccess('users', 'add');
 $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
-?><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+?>
+@section('title')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 
 
 <style>
@@ -22,6 +24,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
 </style>
 <title>{{ $datas['title'] }}</title>
+@endsection
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight hetf2"><i class="bi bi-person-plus-fill"></i>

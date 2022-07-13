@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         
-        <link href="{{ asset('favicon.ico') }}" rel="icon">
+        <link href="{{ asset('a.png') }}" rel="icon">
         <title>{{ config('app.name', 'MyAppsZ') }}</title>
 
         <!-- Fonts -->

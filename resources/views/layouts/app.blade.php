@@ -4,8 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
-        <link href="{{ asset('favicon.ico') }}" rel="icon">
+        
+        <link href="{{ asset('a.png') }}" rel="icon">
+        @yield('title')
         <title>{{ config('app.name', 'MyAppsZ') }}</title>
 
         <!-- Fonts -->
@@ -25,7 +26,7 @@
 
         <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet">
         @yield('css')
-
+        
     </head>
     <body>
         <div class="container-fluid">

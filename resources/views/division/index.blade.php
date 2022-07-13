@@ -5,9 +5,11 @@ $haveaccessadd = Helpers::checkaccess('divisions', 'delete');
 $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
 ?>
+
+@section('title')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 <title>{{ $datas['title'] }}</title>
-{{-- {{ dd($datas) }} --}}
+@endsection
 
 <x-app-layout>
     <x-slot name="header">

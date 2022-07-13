@@ -260,28 +260,25 @@ class GudangController extends Controller
         // Save id user di list user gudang
         if($request->user_group != ''){
             $explode = explode(', ', $request->user_group);
-            // delete list gudang
+         
             List_user_gudang::where('id_gudang', $id)->delete(); // cek 
 
             foreach($explode as $explode_id){
 
                 if($explode_id == '') continue;
                 $cariuser = List_user_gudang::where('id_user', $explode_id)->where('id_gudang', $datas->id)->first(); // cek apakah pernah di input
+        
                 if(isset($cariuser->id)) continue;
 
                 $user = List_user_gudang::where('id', $id)->first();
-
+               
                 if(!isset($user->id)) {
                     $user = new List_user_gudang;
                     $user->id_user = $explode_id;
                     $user->id_gudang = $id;
                     $user->created_at = date('Y-m-d H:i:s');
-                    $user->save(); // tambah kan user baru berdasarkan id gudang
-                } else {
-                    $user->id_user = $explode_id;
-                    $user->id_gudang = $id;
-                    $user->updated_at = date('Y-m-d H:i:s');
-                    $user->save(); // Update user berdasarkan id gudang
+                    $user->save();
+                    // dd($user->save()); // tambah kan user baru berdasarkan id gudang
                 }
                 
             }

@@ -5,6 +5,9 @@ $haveaccessadd = Helpers::checkaccess('listPaket', 'delete');
 $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
 ?>
+@section('title')
+<title>{{ $datas['title'] }}</title>
+@endsection
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 
@@ -41,7 +44,6 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
 </style>
 @endsection
-
 
 <x-app-layout>
     <x-slot name="header">
@@ -90,7 +92,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                 <div class="modal-body">
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade active show" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                            <form id="paketform">
+                            <form id="paketform" enctype="">
                                 @csrf
                                 <dl class="row mb-0">
                                 <dt class="col-sm-4">Nama Paket</dt>
@@ -171,6 +173,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                 <tr>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Jumlah</th>
+                                    <th scope="col">Satuan</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -318,13 +321,10 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
     $('#paketid').keyup(function(){  
 
         $(".table-option").show();
-        // $("#user_group").hide();
-        // $("#id_name").hide();
         var id = $('.editt').val();
         var table3 = document.querySelector("#table_edit tbody");
-        
-        // $("#table_edit").hide();
         var path = "{{ route('autocomplete') }}";
+        $(".nooo").html("");
         var query = $(this).val();  
         if(query != '')  {  
             $.ajax({  
@@ -365,8 +365,9 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                     var htmlinputtable = '<tr class="" id="row-'+k.id+'">\
                     <td class="sorting_1">'+k[0]+'</td>\
                     <td>'+k[1]+'</td>\
+                    <td>'+k[2]+'</td>\
                     </tr>';
-                    console.log(htmlinputtable);
+                    // console.log(htmlinputtable);
                     const regex = new RegExp('(row-' + id + ')', 'gm');
                     let m;
                     if(regex.exec(table3.innerHTML) == null)
@@ -377,7 +378,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                         $('#modal_view').modal('hide');
                     }
                 }); 
-                $("#id_name").val(id);
+                  $("#id_name").val(id);
                   $('.editt').val(id);
               
                 
@@ -391,7 +392,6 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 
     function table(a) { 
         id = $(a).val();
-
         var hidden = $("#user_group").val();
         var tampung = hidden + ', ' + id;
         nama = $( "#id_user option:selected" ).text();
@@ -460,13 +460,11 @@ if(m = pattern.exec(hidden) == null) {
         $('#modaladd').modal('show');
         $(".table-option").show();
         $("#modal_view").modal('hide');
-        $(".tutuptable").hide();
         $(".titlemodal").html(' Edit Paket')
         $('.icoon').html('<i class="bi bi-pencil-square"></i>');
         $("#paketid").val("");
         $('.paket_lisy').html("");
         $('#user_group').hide();
-        $(".dataTables_empty").hide();
         $('.copy').html("");
         $(".control-group after-add-more").html("");
         var id = $("#id_name").val();
@@ -482,6 +480,7 @@ if(m = pattern.exec(hidden) == null) {
                             $("#nama_paket").val(response[0].nama_paket)
                             data = response.data
                             // console.log(data[0],data);
+                            if(data){
                                 var tampungUser = inHtml= "";
                                 $.each(data, function(k, item){
                                     // console.log(item[0],item[1],item[2], item[3],item[5]);
@@ -492,22 +491,23 @@ if(m = pattern.exec(hidden) == null) {
                                         <td>'+item[3]+'</td>\
                                         <td class="dt-body-center">\
                                             <div class="form-group row">\
-                                                <div class="col-xs-2"><input type="text" value= '+item[4]+' name="jumlah[\'id\']['+item[4]+']" id="jumlah-'+item[4]+'" class="form-group form-control"></div>\
-                                            </div>\
-                                        </td>\
-                                        <td class="  dt-body-center"><span class="btn btn-danger deletee btn-sm" onclick="kurangininput('+item[5]+')"><i class="bi bi-trash-fill"></i></span></td>\
-                                        </tr>';
-                                 
-                                        table3.innerHTML = table3.innerHTML + htmlinput;
-                                        const regex = new RegExp('(row-' + id + ')', 'gm');
-                                        let m;
-
-                                     
-                                    // console.log(k,item);
-
-                                    tampungUser = tampungUser + ", " + item[5];
-                                    $("#user_group").val(tampungUser)
-                                });
+                                                <div class="col-xs-2"><input type="number" value= '+item[4]+' name="jumlah[\'id\']['+item[4]+']" id="jumlah-'+item[4]+'" step="0.05" class="form-group form-control"></div>\
+                                                </div>\
+                                                </td>\
+                                                <td class="  dt-body-center"><span class="btn btn-danger deletee btn-sm" onclick="kurangininput('+item[5]+')"><i class="bi bi-trash-fill"></i></span></td>\
+                                                </tr>';
+                                                
+                                                table3.innerHTML = table3.innerHTML + htmlinput;
+                                                // const regex = new RegExp('(row-' + id + ')', 'gm');
+                                                // let m;
+                                                
+                                                
+                                                // console.log(k,item);
+                                                
+                                                tampungUser = tampungUser + ", " + item[5];
+                                                $("#user_group").val(tampungUser)
+                                            });
+                                        }
                                 $("#nama_paket").val()
                         }});
 

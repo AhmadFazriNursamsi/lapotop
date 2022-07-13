@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="{{ asset('favicon.ico') }}" rel="icon">
+        <link href="{{ asset('a.png ') }}" rel="icon">
         <title>MyAppsZ</title>
 
         <!-- Fonts -->
@@ -31,7 +31,7 @@
     
     <ul class="content__container__list">
       <li class="content__container__list__item">Hello World !</li>
-      <li class="content__container__list__item">Hello Everybody !</li>
+      <li class="content__container__list__item">My Name Is Fazri !</li>
       <li class="content__container__list__item">Welcome !</li>
       <li class="content__container__list__item">to MyappsZ !</li>
     </ul>

@@ -30,7 +30,7 @@ class PaketProductController extends Controller
         return view('paket.index',array(
             'datas'  => array(
                 'satuan' => $satuan,
-                'title' => 'Gudang',
+                'title' => 'List Paket',
                 'product' => $product
               
             )
@@ -49,8 +49,6 @@ class PaketProductController extends Controller
             }
     
             return response()->json(['data' => $datas, 'status' => '200'], 200);
-    
-    ////gambar nama satuan kodeproduct 
     }
 
     public function getdataproduct($id){
@@ -157,14 +155,14 @@ class PaketProductController extends Controller
        foreach($tatas->detailPaket as $key  => $data){
          $tatas->detailPaket[$key]->nama = Calamat::detail_paket_id($data->id_product);
          $datas[$key]= [
-            $data->nama,$data->jumlah
+            $data->nama,$data->jumlah,$data->satuan
          ];
        }
         return response()->json(['data' => $datas,$tatas, 'status' => '200'], 200);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified resource. data
      *
      * @param  \App\Models\ListPaket  $listPaket
      * @return \Illuminate\Http\Response
@@ -205,17 +203,14 @@ class PaketProductController extends Controller
      */
     public function update($id, Request $request, ListPaket $listPaket)
     {
-        // dd($id);
+
         $validator = Validator::make($request->all(), [
             'jumlah.*' => 'required',
-            // 'search' => 'required',
-            // 'selectproduct' => 'required',
             'nama_paket' => 'required',
+            'user_group' => 'required',
        ],[
            'nama_paket.required' => 'Nama Paket Tidak Boleh Kosong',
-        //    'search.required' => 'Pilih Paket Terlebih Dahulu',
-        //    'nama_paket.unique' => 'Nama Paket Sudah Terdaftar',
-        //    'selectproduct.required' => 'Pilih Paket Terlebih Dahulu',
+           'user_group.required' => 'Pilih Paket Terlebih Dahulu',
        ]);
     
    if ($validator->fails()) {
@@ -230,27 +225,30 @@ class PaketProductController extends Controller
         if($datas->update()){
             if($request->user_group != ''){
                 $explode = explode(', ', $request->user_group);
+                DetailPaket::where('id_list_paket', $id)->delete();
+               
                 $products = Product::get();
-                 DetailPaket::where('id_product', $id)->delete(); // cek
                 foreach($explode as $explode_id){
-                    // dd($explode_id);
+                    // if($dd == '')continue;
                     if($explode_id == '') continue;
-                    $caripaket = DetailPaket::where('id_list_paket', $datas->id)->where('id_product', $explode_id)->first(); // cek apakah pernah di input
-                    // dd($caripaket);
-                    if(isset($caripaket->id)) continue;
-                    // dd($explode_id);
-
+                    $caripaket = DetailPaket::where('id_product', $explode_id)->where('id_list_paket', $datas->id)->first(); // cek apakah pernah di input
+       
                     $tatas = DetailPaket::where('id', $id)->first();
-                    if(!isset($caripaket->id)){
+                    
+                    // if(isset($caripaket->id)) continue;
+                    
+                    // if(!isset($tatas->id)){
                         $tatas = new DetailPaket;
-                        $tatas->id_list_paket =$datas->id;
-                        $tatas->id_product =$explode_id;
-                        $tatas->jumlah =$request->jumlah["'id'"][$explode_id];
+                        $jumlah = $request->jumlah["'id'"][$explode_id]; // value lama
+                        $tatas->id_product = $explode_id;
+                        $tatas->id_list_paket = $id;
+                        $tatas->jumlah = $jumlah; 
+                        // $tatas->jumlah =$request->jumlah["'id'"][$explode_id];
                         $tatas->satuan = $products[0]->satuan;
-                        $tatas->updated_at = date('Y-m-d H:i:s');
-                        $tatas->save();// tambah kan user baru berdasarkan id gudang
-                    }
-                    }   
+                        $tatas->created_at = date('Y-m-d H:i:s');
+                        $tatas->save();// tambah kan paket  baru berdasarkan id gudang 
+                    // }
+                }   
             }
         }             
          return response()->json(['data' => ['success'], 'status' => '200'], 200);
@@ -262,8 +260,4 @@ class PaketProductController extends Controller
      * @param  \App\Models\ListPaket  $listPaket
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, ListPaket $listPaket)
-    {
-        dd($id);
-    }
 }

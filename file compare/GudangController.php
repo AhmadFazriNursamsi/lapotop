@@ -92,68 +92,68 @@ class GudangController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+    //     $validator = Validator::make($request->all(), [
       
-            'nama' => 'required',
-            'alias_gudang' => 'required',
-            'alamat' => 'required',
+    //         'nama' => 'required',
+    //         'alias_gudang' => 'required',
+    //         'alamat' => 'required',
           
-        ],[
-         'nama.required' => 'Nama Gudang Tidak Boleh Kosong',
-         'alias_gudang.required' => 'Alias Gudang  Tidak Boleh Kosong',
-         'alamat.required' => 'Alamat Tidak Boleh Kosong',
+    //     ],[
+    //      'nama.required' => 'Nama Gudang Tidak Boleh Kosong',
+    //      'alias_gudang.required' => 'Alias Gudang  Tidak Boleh Kosong',
+    //      'alamat.required' => 'Alamat Tidak Boleh Kosong',
          
-        ]);
+    //     ]);
          
-        if ($validator->fails()) {
-         return response()->json(['errors'=>$validator->errors()->all()]);
-     }
+    //     if ($validator->fails()) {
+    //      return response()->json(['errors'=>$validator->errors()->all()]);
+    //  }
 
-     $datas = new Gudang();
-     $datas->nama = $request->nama;
-     $datas->alias_gudang = $request->alias_gudang;
-     $datas->alamat = $request->alamat;
-     $datas->active = $request->active;
+    //  $datas = new Gudang();
+    //  $datas->nama = $request->nama;
+    //  $datas->alias_gudang = $request->alias_gudang;
+    //  $datas->alamat = $request->alamat;
+    //  $datas->active = $request->active;
 
 
-     if($datas->save()){
-        // Save id user di list user gudang
-        if($request->user_group != ''){
-            $explode = explode(', ', $request->user_group);
-            foreach($explode as $explode_id){
-                if($explode_id == '') continue;
+    //  if($datas->save()){
+    //     // Save id user di list user gudang
+    //     if($request->user_group != ''){
+    //         $explode = explode(', ', $request->user_group);
+    //         foreach($explode as $explode_id){
+    //             if($explode_id == '') continue;
 
-                $cariuser = List_user_gudang::where('id_user', $explode_id)->where('id_gudang', $datas->id)->first(); // cek apakah pernah di input
-                if(isset($cariuser->id)) continue;
+    //             $cariuser = List_user_gudang::where('id_user', $explode_id)->where('id_gudang', $datas->id)->first(); // cek apakah pernah di input
+    //             if(isset($cariuser->id)) continue;
 
-                $user = new List_user_gudang;
-                $user->id_user = $explode_id;
-                $user->id_gudang = $datas->id;
-                $user->created_at = date('Y-m-d H:i:s');
-                $user->save(); // tambah kan user baru berdasarkan id gudang
-            }
+    //             $user = new List_user_gudang;
+    //             $user->id_user = $explode_id;
+    //             $user->id_gudang = $datas->id;
+    //             $user->created_at = date('Y-m-d H:i:s');
+    //             $user->save(); // tambah kan user baru berdasarkan id gudang
+    //         }
 
             
-        }
-        $products = Product::get();
-        foreach($products as $product){
-            $listProduct = list_product::where('id_gudang', $datas->id)->where('id_product', $product->id)->first();
-            if(isset($listProduct->id)) continue;
-            else{
-                $listProduct = new list_product;
+    //     }
+    //     $products = Product::get();
+    //     foreach($products as $product){
+    //         $listProduct = list_product::where('id_gudang', $datas->id)->where('id_product', $product->id)->first();
+    //         if(isset($listProduct->id)) continue;
+    //         else{
+    //             $listProduct = new list_product;
                 
-                $listProduct->id_gudang =$datas->id;
-                $listProduct->id_product =$product->id;
-                $listProduct->created_at = date('Y-m-d H:i:s');
-                $listProduct->save();
-            }
-        }
+    //             $listProduct->id_gudang =$datas->id;
+    //             $listProduct->id_product =$product->id;
+    //             $listProduct->created_at = date('Y-m-d H:i:s');
+    //             $listProduct->save();
+    //         }
+    //     }
         // Tambahin List Product Gudang Baru
         // 1. ambil semua list product gudang ...
         // 2. looping list product gudang
         // 3. cek apakah sudah terimput
         // 4. tambahkan kalau belum ada
-     }
+    //  }
      
                     
      return response()->json(['data' => ['success'], 'status' => '200'], 200);
@@ -207,66 +207,68 @@ class GudangController extends Controller
      * @param  \App\Models\Gudang  $gudang
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function sad(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-      
-            'nama' => 'required',
-            'alias_gudang' => 'required',
-            'alamat' => 'required',
-            'user_group' => 'required',
-          
-        ],[
-         'nama.required' => 'Nama Gudang Tidak Boleh Kosong',
-         'alias_gudang.required' => 'Alias Gudang  Tidak Boleh Kosong',
-         'alamat.required' => 'Alamat Tidak Boleh Kosong',
-         'user_group.required' => 'User Tidak Boleh Kosong',
-         
-        ]);
-         
-        if ($validator->fails()) {
-         return response()->json(['errors'=>$validator->errors()->all()]);
-     }
+        // $validator = Validator::make($request->all(), [
+    //   
+    dd("tes");
+            // 'nama' => 'required',
+            // 'alias_gudang' => 'required',
+            // 'alamat' => 'required',
+            // 'user_group' => 'required',
+        //   
+        // ],[
+        //  'nama.required' => 'Nama Gudang Tidak Boleh Kosong',
+        //  'alias_gudang.required' => 'Alias Gudang  Tidak Boleh Kosong',
+        //  'alamat.required' => 'Alamat Tidak Boleh Kosong',
+        //  'user_group.required' => 'User Tidak Boleh Kosong',
+        //   
+        // ]);
+        //  
+        // if ($validator->fails()) {
+        //  return response()->json(['errors'=>$validator->errors()->all()]);
+    //  }
 
-     $datas = Gudang::where('id', $id)->first();
-     $datas->nama = $request->nama;
-     $datas->alias_gudang = $request->alias_gudang;
-     $datas->alamat = $request->alamat;
-     $datas->active = $request->active;
+    //  $datas = Gudang::where('id', $id)->first();
+    //  $datas->nama = $request->nama;
+    //  $datas->alias_gudang = $request->alias_gudang;
+    //  $datas->alamat = $request->alamat;
+    //  $datas->active = $request->active;
 
+    //  $d = List_user_gudang::where('id_gudang', $id)->delete(); // cek 
+    //  dd($d);   
 
-     if($datas->update()){
-        // Save id user di list user gudang
-        if($request->user_group != ''){
-            $explode = explode(', ', $request->user_group);
-            // delete list gudang
-         List_user_gudang::where('id_gudang', $id)->delete(); // cek 
-            foreach($explode as $explode_id){
+    //  if($datas->update()){
+    //     // Save id user di list user gudang
+    //     if($request->user_group != ''){
+    //         $explode = explode(', ', $request->user_group);
+    //         // delete list gudang
+    //      foreach($explode as $explode_id){
 
-                if($explode_id == '') continue;
-                $cariuser = List_user_gudang::where('id_user', $explode_id)->where('id_gudang', $datas->id)->first(); // cek apakah pernah di input
-                if(isset($cariuser->id)) continue;
+    //             if($explode_id == '') continue;
+    //             $cariuser = List_user_gudang::where('id_user', $explode_id)->where('id_gudang', $datas->id)->first(); // cek apakah pernah di input
+    //            dd($cariuser);
+    //             if(isset($cariuser->id)) continue;
+    //             $user = List_user_gudang::where('id', $id)->first();
 
-                $user = List_user_gudang::where('id', $id)->first();
-
-                if(!isset($user->id)) {
-                    $user = new List_user_gudang;
-                    $user->id_user = $explode_id;
-                    $user->id_gudang = $id;
-                    $user->created_at = date('Y-m-d H:i:s');
-                    $user->save(); // tambah kan user baru berdasarkan id gudang
-                } else {
-                    $user->id_user = $explode_id;
-                    $user->id_gudang = $id;
-                    $user->updated_at = date('Y-m-d H:i:s');
-                    $user->save(); // Update user berdasarkan id gudang
-                }
+    //             if(!isset($user->id)) {
+    //                 $user = new List_user_gudang;
+    //                 $user->id_user = $explode_id;
+    //                 $user->id_gudang = $id;
+    //                 $user->created_at = date('Y-m-d H:i:s');
+    //                 $user->save(); // tambah kan user baru berdasarkan id gudang
+    //             } else {
+    //                 $user->id_user = $explode_id;
+    //                 $user->id_gudang = $id;
+    //                 $user->updated_at = date('Y-m-d H:i:s');
+    //                 $user->save(); // Update user berdasarkan id gudang
+    //             }
                 
-            }
-        }
+    //         }
+    //     }
 
 
-     }
+    //  }
      
                     
      return response()->json(['data' => ['success'], 'status' => '200'], 200);
