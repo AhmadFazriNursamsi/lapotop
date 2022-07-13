@@ -130,7 +130,7 @@ class PaketProductController extends Controller
                     $listProduct->id_list_paket =$datas->id;
                     $listProduct->id_product =$explode_id;
                     $listProduct->jumlah =$request->jumlah["'id'"][$explode_id];
-                    $listProduct->satuan = $product->satuan;
+                    // $listProduct->satuan = $product->satuan;
                     $listProduct->created_at = date('Y-m-d H:i:s');
                     $listProduct->save();// tambah kan user baru berdasarkan id gudang
                 }   
@@ -155,7 +155,7 @@ class PaketProductController extends Controller
        foreach($tatas->detailPaket as $key  => $data){
          $tatas->detailPaket[$key]->nama = Calamat::detail_paket_id($data->id_product);
          $datas[$key]= [
-            $data->nama,$data->jumlah,$data->satuan
+            $data->nama,$data->jumlah
          ];
        }
         return response()->json(['data' => $datas,$tatas, 'status' => '200'], 200);
@@ -176,22 +176,10 @@ class PaketProductController extends Controller
         foreach($tatas->detailPaket as $key  => $data){
           $tatas->detailPaket[$key]->nama = Calamat::detail_paket_id($data->id_product);
           $datas[$key]= [
-             $i++,$data->nama,$data->satuan,$data->products[0]->kode_products,$data->jumlah,$data->products[0]->id
+             $i++,$data->nama,$data->products[0]->satuan,$data->products[0]->kode_products,$data->jumlah,$data->products[0]->id
           ];
         }
         return response()->json(['data' => $datas,$tatas, 'status' => '200'], 200);
-    }
-    public function dd($id){
-        $paket =  DetailPaket::with('products')->where('id', $id)->get();
-            $datas = [];
-            $i = 1;
-            foreach($paket as $key => $product){
-                $datas[$key] = [
-                $i++, $paket[0]->products[0]->nama ,$paket[0]->products[0]->satuan,$paket[0]->products[0]->kode_products,$product->jumlah,$paket[0]->products[0]->id 
-                ];
-            }
-    
-            return response()->json(['data' => $datas, 'status' => '200'], 200);
     }
 
     /**
@@ -226,28 +214,15 @@ class PaketProductController extends Controller
             if($request->user_group != ''){
                 $explode = explode(', ', $request->user_group);
                 DetailPaket::where('id_list_paket', $id)->delete();
-               
-                $products = Product::get();
                 foreach($explode as $explode_id){
-                    // if($dd == '')continue;
                     if($explode_id == '') continue;
-                    $caripaket = DetailPaket::where('id_product', $explode_id)->where('id_list_paket', $datas->id)->first(); // cek apakah pernah di input
-       
-                    $tatas = DetailPaket::where('id', $id)->first();
-                    
-                    // if(isset($caripaket->id)) continue;
-                    
-                    // if(!isset($tatas->id)){
                         $tatas = new DetailPaket;
-                        $jumlah = $request->jumlah["'id'"][$explode_id]; // value lama
+                        // $jumlah = $ // value lama
                         $tatas->id_product = $explode_id;
                         $tatas->id_list_paket = $id;
-                        $tatas->jumlah = $jumlah; 
-                        // $tatas->jumlah =$request->jumlah["'id'"][$explode_id];
-                        $tatas->satuan = $products[0]->satuan;
+                        $tatas->jumlah = $request->jumlah["'id'"][$explode_id];; 
                         $tatas->created_at = date('Y-m-d H:i:s');
                         $tatas->save();// tambah kan paket  baru berdasarkan id gudang 
-                    // }
                 }   
             }
         }             

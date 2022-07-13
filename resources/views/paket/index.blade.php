@@ -173,7 +173,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                 <tr>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Jumlah</th>
-                                    <th scope="col">Satuan</th>
+                                    {{-- <th scope="col">Satuan</th> --}}
                             </tr>
                           </thead>
                           <tbody>
@@ -365,7 +365,6 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                     var htmlinputtable = '<tr class="" id="row-'+k.id+'">\
                     <td class="sorting_1">'+k[0]+'</td>\
                     <td>'+k[1]+'</td>\
-                    <td>'+k[2]+'</td>\
                     </tr>';
                     // console.log(htmlinputtable);
                     const regex = new RegExp('(row-' + id + ')', 'gm');
@@ -491,10 +490,10 @@ if(m = pattern.exec(hidden) == null) {
                                         <td>'+item[3]+'</td>\
                                         <td class="dt-body-center">\
                                             <div class="form-group row">\
-                                                <div class="col-xs-2"><input type="number" value= '+item[4]+' name="jumlah[\'id\']['+item[4]+']" id="jumlah-'+item[4]+'" step="0.05" class="form-group form-control"></div>\
+                                                <div class="col-xs-2"><input type="number" value= '+item[4]+' name="jumlah[\'id\']['+item[5]+']" id="jumlah-'+item[5]+'" step="0.05" class="form-group form-control"></div>\
                                                 </div>\
                                                 </td>\
-                                                <td class="  dt-body-center"><span class="btn btn-danger deletee btn-sm" onclick="kurangininput('+item[5]+')"><i class="bi bi-trash-fill"></i></span></td>\
+                                                <td class="dt-body-center"><span class="btn btn-danger deletee btn-sm" onclick="kurangininput('+item[5]+')"><i class="bi bi-trash-fill"></i></span></td>\
                                                 </tr>';
                                                 
                                                 table3.innerHTML = table3.innerHTML + htmlinput;
@@ -502,7 +501,7 @@ if(m = pattern.exec(hidden) == null) {
                                                 // let m;
                                                 
                                                 
-                                                // console.log(k,item);
+                                                // console.log(k,item); 
                                                 
                                                 tampungUser = tampungUser + ", " + item[5];
                                                 $("#user_group").val(tampungUser)

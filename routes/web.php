@@ -93,7 +93,6 @@ Route::get('/gudang/detail/{id}', [GudangController::class, 'show']);
 Route::get('/gudang/delete/{id}', [GudangController::class, 'destroy']);
 Route::get('/gudang/edit/{id}', [GudangController::class, 'edit']);
 Route::post('/gudang/update/{id}', [GudangController::class, 'update']);
-Route::get('/api/tableproduct/edit/{id}', [PaketProductController::class, 'dd']);
 
 
 Route::get('/api/listProduct/getdata/{id}', [GudangController::class, 'listgudanggetdata']);
