@@ -12,43 +12,42 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 
 <style>
-    .animate-charcter
-{
-   text-transform: uppercase;
-  background-image: linear-gradient(
-    -225deg,
-    #231557 0%,
-    #44107a 29%,
-    #ff1361 67%,
-    #fff800 100%
-  );
-  background-size: auto auto;
-  background-clip: border-box;
-  background-size: 200% auto;
-  font-family: 'Times New Roman', Times, serif;
-  color: #fff;
-  background-clip: text;
-  text-fill-color: transparent;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: textclip 2s linear infinite;
-  display: inline-block;
-      font-size: 30px;
-}
+    .animate-charcter{
+        text-transform: uppercase;
+        background-image: linear-gradient(
+            -225deg,
+            #9d0320 0%,
+            #0101ab 29%,
+            #ff1361 67%,
+            #fff800 100%
+        );
+        background-size: auto auto;
+        background-clip: border-box;
+        background-size: 200% auto;
+        font-family: 'Times New Roman', Times, serif;
+        color: #fff;
+        background-clip: text;
+        text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: textclip 2s linear infinite;
+        display: inline-block;
+            font-size: 30px;
+        }
 
-@keyframes textclip {
-  to {
-    background-position: 200% center;
-  }
-}
+    @keyframes textclip {
+    to {
+        background-position: 200% center;
+    }
+    }
 
 </style>
 @endsection
 
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight hetf2"><i class="bi bi-box2-fill"></i>
-            {{ __('List Paket') }} <?php if($haveaccessadd): ?> <button type="button" class="btn btn-success btn-sm" id="buttonaddPaket"> <i class="bi bi-box2-fill"></i> Add Paket</button><?php endif; ?>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight hetf2"><i class="bi bi-box2-fill mx-2"></i>
+            {{ __('LIST PAKET') }} <?php if($haveaccessadd): ?> <button type="button" class="btn btn-success btn-sm" id="buttonaddPaket"> <i class="bi bi-file-earmark-plus-fill"></i> ADD PAKET</button><?php endif; ?>
         </h2>
     </x-slot>
                                                     {{-- HEADER --}}
@@ -83,7 +82,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
             <div class="modal-content">
                 <div class="modal-header d-flex justify-content-lg-start">
                     <h4><i class="icoon"></i></h4>
-                    <h4><i class="titlemodal"></i> </h4>
+                    <h4><i class="titlemodal mx-2"></i> </h4>
                 </div>
                 <div class="modal-body">
                     <div class="tab-content" id="pills-tabContent">
@@ -108,7 +107,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                 <table class="table table-striped" id="table_edit">
                                     <thead>
                                         <tr>
-                                            <th class="nooo">No</th>
+                                            <th class="nooo"></th>
                                             <th class="align-center">Nama Product</th>
                                             <th class="align-center">Satuan</th>
                                             <th class="align-center">Alias</th>
@@ -120,7 +119,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                 </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th class="nooo">No</th>
+                                            <th class="nooo"></th>
                                             <th class="align-center">Nama Product</th>
                                             <th class="align-center">Satuan</th>
                                             <th class="align-center">Alias</th>
@@ -152,12 +151,13 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                 <div class="modal-body">
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade active show" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                            <center><i><b class="animate-charcter mb-3" id="paket_id"></b></center> </i>     
+                            <center><i><b class="animate-charcter mb-3" id="paket_id"></b></i></center>     
                             <table class="table table-striped" id="table_show">
                                 <thead>
                                     <tr>
                                         <th scope="col">Nama</th>
                                         <th scope="col">Jumlah</th>
+                                        <th scope="col">Satuan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -168,7 +168,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                 </div>
                 <div class="modal-footer">
                     <button id="closeModalmodaladd" type="button" class="btn closeModalmodaladd btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                    <button type="submit" id="editt" class="btn btn-success btn-sm" data-id="" onclick="editshow(this)">Edit</button>
+                    <button type="submit" id="editt" class="btn btn-success btn-sm" data-id="" onclick="editshow(this)"><i class="bi bi-pencil-square"></i> Edit</button>
                 </div>
             </div>
         </div>
@@ -196,7 +196,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                 'orderable': false,
                                 'className': 'dt-body-center',
                                 'render': function(data, type, full, meta) {
-                                    return '<span class="btn btn-info btn-sm" onclick="showdetail(' + full[2] + ')">details</span>';
+                                    return '<span class="btn btn-info btn-sm" onclick="showdetail(' + full[2] + ')"><i class="bi bi-eye-fill"> View</i></span>';
                                 }
                         }],
                     });
@@ -228,7 +228,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                     $("#buttonaddPaket").on('click', function () { 
                         $('#modaladd').modal('show');
                         $(".titlemodal").html(' Add Paket');
-                        $('.icoon').html('<i class="bi bi-plus-circle-fill"></i>');
+                        $('.icoon').html('<i class="bi bi-file-earmark-plus-fill"></i>');
                         $("#paketid").val("");
                         $('.paket_lisy').html("");
                         $('#user_group').hide();
@@ -257,12 +257,21 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                     data = response.data;
                                     if(data == 'success') {
                                         Swal.fire({
-                                            title: 'Selamat!',
-                                            text: "Data Berhasil Disimpan",
-                                            icon: 'success'
-                                        });
-                                        $('#modaladd').modal('hide');
-                                        reloaddata();
+                                            icon: 'success',
+                                            title: 'Success.',
+                                            width: 600,
+                                            padding: '3em',
+                                            color: '#716add',
+                                            background: '#fff url(/images/trees.png)',
+                                            backdrop: `
+                                                rgba(0,0,123,0.4)
+                                                url("nyan-cat.gif")
+                                                left top
+                                                no-repeat
+                                            `
+                                            })
+                                    reloaddata();
+                                    $('#modaladd').modal('hide');
                                     }
                                     else {
                                         $.each(response.errors, function(key, value){
@@ -387,6 +396,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                                     var htmlinputtable = '<tr class="" id="row-'+k.id+'">\
                                     <td class="sorting_1">'+k[0]+'</td>\
                                     <td>'+k[1]+'</td>\
+                                    <td>'+k[2]+'</td>\
                                     </tr>';
                                     const regex = new RegExp('(row-' + id + ')', 'gm');
                                     let m;
@@ -415,6 +425,7 @@ $haveaccessdelete = Helpers::checkaccess('users', 'delete');
                     $('.paket_lisy').html("");
                     $('#user_group').hide();
                     $('.copy').html("");
+                    // $(".nooo").hide();
                     $(".control-group after-add-more").html("");
                     var id = $("#id_name").val();
                     var table3 = document.querySelector("#table_edit tbody");

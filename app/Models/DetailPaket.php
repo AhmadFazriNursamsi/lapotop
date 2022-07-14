@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DetailPaket extends Model
 {
     use HasFactory;
-    protected $table = "detail_paket_produk";
+    protected $table = "list_paket_produk_detail";
     protected $primaryKey = "id";
     protected $guarded = ['id'];
     public $timestamps = false;

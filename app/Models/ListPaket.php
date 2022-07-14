@@ -18,5 +18,11 @@ class ListPaket extends Model
         return $this->hasMany('App\Models\DetailPaket','id_list_paket', 'id');
     }
 
+    public function product()
+    {
+        return $this->hasMany('App\Models\Product','id', 'id_product');
+    }
+
+
     
 }

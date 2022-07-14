@@ -110,12 +110,13 @@ class PaketProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id){
-       $tatas  = ListPaket::with('detailPaket')->where('id', $id)->first();
+       $tatas  = ListPaket::with('detailPaket', 'detailPaket.products')->where('id', $id)->first();
+    //    dd($tatas->detailPaket);
        $datas = [];
        foreach($tatas->detailPaket as $key  => $data){
          $tatas->detailPaket[$key]->nama = Calamat::detail_paket_id($data->id_product);
          $datas[$key]= [
-            $data->nama,$data->jumlah
+            $data->nama,$data->jumlah,$data->products[0]->satuan
          ];
        }
         return response()->json(['data' => $datas,$tatas, 'status' => '200'], 200);
@@ -168,6 +169,7 @@ class PaketProductController extends Controller
             if($request->user_group != ''){
                 $explode = explode(', ', $request->user_group);
                 DetailPaket::where('id_list_paket', $id)->delete();
+
                 foreach($explode as $explode_id){
                     if($explode_id == '') continue;
                         $tatas = new DetailPaket;

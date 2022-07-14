@@ -81,7 +81,7 @@ class HelpersController extends Controller
             "url":"paketproduct",
             "name":"Paket Product",
             "class":"",
-            "icon":"clr-blue fa fa-tasks",
+            "icon":"bi bi-box2-fill",
             "list_child":[]
         }, { 
             "dropdown":"0",

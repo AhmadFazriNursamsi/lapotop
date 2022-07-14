@@ -1,1 +1,1 @@
-<img src="shanks.png" alt="" width="120px" height="100px">
+<img src="shanks_1.svg" alt="" width="120px" height="100px">
