@@ -11,7 +11,6 @@ use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\ListaccessController;
-use App\Http\Controllers\PagesQrController;
 use App\Http\Controllers\R404Controller;
 use App\Http\Controllers\QrcodeController;
 
